@@ -24,11 +24,13 @@ A demo, `demo.py`, is also provided to demonstrate appearance and behaviour of t
 
 # Usage
 Currently this is just the Python classes without any Gtk Builder support. Use them as you would any other widget.
+
+**AppChooserDialog:**
 ```
 my_dialog = AppChooserDialog()
 my_app_info = my_dialog.run()
 ```
-
+**AppChooserButton:**
 ```
 my_button = AppChooserButton()
 my_button.connect('app-selected', on_app_selected)
@@ -36,17 +38,17 @@ my_button.connect('app-selected', on_app_selected)
 def on_app_selected(app_info):
     my_app_info = app_info
 ```
-
+**AppChooserComboBox:**
 ```
 my_combo = AppChooserComboBox()
 my_combo.connect('changed', on_app_selected)
 
 def on_app_selected(combo):
-    my_app_info = combo.get_selected_app()
+    my_app_info = my_combo.get_selected_app()
 
 ```
 **Common Methods:**
-
+- `get/set_mime_types()`:Gets/sets a list of MIME types to show applications for. An empty list means all MIME types are used - This is the default.
 - `get/set_search_term()`: Gets/sets a string to use to filter applications by display name. If no term is set, no filtering is done - This is the default.
 - `get/set_use_regex()`: Gets/sets whether to use regex for application filtering. If `True`, the filter term is used as a regex pattern for matching applications by their display name. If it is set to `False` then basic, case-insensitive, substring matching of the display name is used - This is the default.
 - `get_selected_icon_name()`: Gets the Gio.AppInfo of the selected application.
