@@ -66,13 +66,13 @@ class Demo:
         dialog = AppChooser.AppChooserDialog()
         dialog.set_transient_for(self.window)
         selection = dialog.run()
+        dialog.destroy()
         if not selection:
             print("No app was selected.")
             print(None)
         else:
             print("{0} was selected.".format(selection.get_display_name()))
             print(selection)
-        dialog.destroy()
 
 
 def print_selection(widget):

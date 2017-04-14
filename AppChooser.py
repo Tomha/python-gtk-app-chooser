@@ -27,31 +27,30 @@ class AppChooserDialog(Gtk.Dialog):
     """GTK+ 3 Dialog to allow selection of an installed application.
     
     The Gio.AppInfo of the selected app is made available as the result of the 
-    run method.
+    run method, or by the get_selected_app method.
     """
 
     def __init__(self, parent=None):
         super().__init__()
 
         self.set_default_size(350, 400)
-        self.set_icon_name('gtk-search')
-        self.set_title('Choose An Application')
+        self.set_icon_name("gtk-search")
+        self.set_title("Choose An Application")
         if parent:
             self.set_parent(parent)
 
         self._mime_types = []
-        self._filter_term = ''
-        self._selected_app = ''
+        self._filter_term = ""
+        self._selected_app = ""
         self._use_regex = False
         self._app_list = []
 
         # Widgets start here
-        self._text_renderer = Gtk.CellRendererText()
 
         # Filtering
         self._filter_entry = Gtk.Entry()
-        filter_label = Gtk.Label('Filter Term:')
-        filter_clear_button = Gtk.Button.new_from_icon_name('gtk-clear',
+        filter_label = Gtk.Label("Filter Term:")
+        filter_clear_button = Gtk.Button.new_from_icon_name("gtk-clear",
                                                             Gtk.IconSize.MENU)
         filter_box = Gtk.Box()
         filter_box.set_spacing(4)
@@ -63,8 +62,8 @@ class AppChooserDialog(Gtk.Dialog):
         self._list_store = Gtk.ListStore(str, str, int)
         pixbuf_renderer = Gtk.CellRendererPixbuf()
         text_renderer = Gtk.CellRendererText()
-        icon_column = Gtk.TreeViewColumn('icon', pixbuf_renderer, icon_name=0)
-        text_column = Gtk.TreeViewColumn('text', text_renderer, text=1)
+        icon_column = Gtk.TreeViewColumn("icon", pixbuf_renderer, icon_name=0)
+        text_column = Gtk.TreeViewColumn("text", text_renderer, text=1)
 
         self._app_view = Gtk.TreeView()
         self._app_view.set_model(self._list_store)
@@ -95,22 +94,25 @@ class AppChooserDialog(Gtk.Dialog):
         self.add_button(Gtk.STOCK_CANCEL, 0)
 
         # Connect signals
-        self._filter_entry.connect('changed', self._filter_apps)
-        filter_clear_button.connect('clicked', lambda button:
-                                    self._filter_entry.set_text(''))
-        self._app_view.connect('cursor-changed', self._on_app_selected)
-        self._app_view.connect('row-activated', self._on_app_activated)
+        self._filter_entry.connect("changed", self._filter_apps)
+        filter_clear_button.connect("clicked", lambda button:
+                                    self._filter_entry.set_text(""))
+        self._app_view.connect("cursor-changed", self._on_app_selected)
+        self._app_view.connect("row-activated", self._on_app_activated)
 
     def _filter_apps(self, entry):
         """Filter apps based on filter term, used when filter term changes.
 
         If use_regex is True, the provided string will be used as the pattern
         for a regex match, otherwise basic case-insensitive matching is used.
+        
+        :param entry: Text entry containing filter text.
+        :return: None
         """
         self._filter_term = entry.get_text()
         self._list_store.clear()
 
-        if self._filter_term == '':
+        if self._filter_term == "":
             for i in range(len(self._app_list)):
                 app = self._app_list[i]
                 if self._mime_types:
@@ -129,7 +131,7 @@ class AppChooserDialog(Gtk.Dialog):
                     if no_match:
                         continue
                 icon = self._app_list[i].get_icon()
-                app_icon = icon.to_string() if icon else 'gtk-missing-icon'
+                app_icon = icon.to_string() if icon else "gtk-missing-icon"
                 app_name = self._app_list[i].get_display_name()
                 self._list_store.append([app_icon, app_name, i])
         else:
@@ -160,7 +162,7 @@ class AppChooserDialog(Gtk.Dialog):
                     if no_match:
                         continue
                 icon = self._app_list[i].get_icon()
-                app_icon = icon.to_string() if icon else 'gtk-missing-icon'
+                app_icon = icon.to_string() if icon else "gtk-missing-icon"
                 app_name = self._app_list[i].get_display_name()
                 self._list_store.append([app_icon, app_name, i])
 
@@ -229,6 +231,8 @@ class AppChooserDialog(Gtk.Dialog):
         self._app_list = Gio.AppInfo.get_all()
         self._app_list.sort(key=lambda app: app.get_display_name())
         self._filter_apps(self._filter_entry)
+        if self._filter_term:
+            self.filter_entry.set_text(self._filter_term)
         self.show_all()
         result = super().run()
         self.destroy()
@@ -285,15 +289,15 @@ class AppChooserDialog(Gtk.Dialog):
 class AppChooserButton(Gtk.Button):
     """GTK + 3 Button to open a dialog to select an installed application.
 
-    The Gio.AppInfo of the selected app is emited via the "app_selected" signal 
-    once the dialog is closed. 
+    The Gio.AppInfo of the selected app is emitted via the "app_selected"
+    signal once the dialog is closed. 
     """
 
     def __init__(self):
         super().__init__()
 
         self._mime_types = []
-        self._filter_term = ''
+        self._filter_term = ""
         self._use_regex = False
         self._selected_app = None
 
@@ -430,7 +434,7 @@ class AppChooserButton(Gtk.Button):
 class AppChooserComboBox(Gtk.ComboBox):
     """GTK+ 3 ComboBox allowing selection of an installed application.
     
-    The Gio.AppInfo of the selected app is made available via the
+    The Gio.AppInfo of the currently selected app is made available via the
     get_selected_app method.
     """
 
@@ -438,7 +442,7 @@ class AppChooserComboBox(Gtk.ComboBox):
         super().__init__()
 
         self._mime_types = []
-        self._filter_term = ''
+        self._filter_term = ""
         self._use_regex = False
         self._app_list = []
 
@@ -458,7 +462,7 @@ class AppChooserComboBox(Gtk.ComboBox):
     def get_mime_types(self):
         """Get the list of mime types from which to select apps.
         
-        :return: List of mime types being filtered.
+        :return: List of mime types to be displayed.
         """
         return self._mime_types
 
