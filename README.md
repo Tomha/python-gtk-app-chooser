@@ -1,5 +1,5 @@
 # About
-GtkAppChooser is a set of GTK+ 3 objects (2 widgets and 1 dialog) for Python3, allowing selection of installed applications. There exist such widgets in GTK, however I found I was unable to get them to display certain applications, and there seemed to be no option to display ALL applications which you have installed. Therefore, for the exercise if nothing else, I have created these widgets which would allow displaying of all installed applications, along with other features.
+A set of GTK+ 3 objects (2 widgets and 1 dialog) for Python3, allowing selection of installed applications. There exist such widgets in GTK, however I found I was unable to get them to display certain applications, and there seemed to be no option to display ALL applications which you have installed. Therefore, for the exercise if nothing else, I have created these widgets which would allow displaying of all installed applications, along with other features.
 
 ![DemoPreview](preview/Demo.png)
 
