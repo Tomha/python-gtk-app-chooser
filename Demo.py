@@ -15,7 +15,7 @@
 # AppChooser; if not, see http://www.gnu.org/licenses/.
 #
 # An up to date version can be found at:
-# https://github.com/Tomha/GtkAppChooser
+# https://github.com/Tomha/python-gtk-app-chooser
 
 import AppChooser
 
